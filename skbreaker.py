@@ -46,8 +46,12 @@ def is_real_string(s):
     In this example we expect the candidate to at least contain:
          "This string is encrypted."
     (This check is made looser than an exact match to help catch minor formatting differences.)
+    
+    BE SURE TO ADJUST WITH THE STRING YOU EXPECT TO GET ON RETURN
+
+    LEAVE THIS EMPTY AND SCAN THE OUTPUT IF YOU DON'T KNOW WHAT STRING YOU ARE EXPECTING!!!
     """
-    return "This string is encrypted." in s
+    return "This string is encrypted." in s 
 
 def auto_patch_decryption(func, candidate_ea, dec_str):
     """

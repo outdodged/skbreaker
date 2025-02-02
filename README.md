@@ -2,6 +2,8 @@
 
 **skbreaker** is an IDAPython plugin that automatically detects, decrypts, and cleans up strings encrypted with the [skCrypter](https://github.com/skadro-official/skCrypter) library. Instead of leaving behind bulky decryption routines in your disassembly, skbreaker patches the encrypted data with the cleartext string and removes the "decryption junk" from referencing functions so you can see the final result directly.
 
+(This readme was mainly wrote by AI)
+
 ## Overview
 
 skCrypter is a compile-time string encryption library that encrypts strings by XOR‑ing each character with a value derived from two key values (typically extracted from the compile-time `__TIME__` macro). At runtime, the decryption routine decrypts these strings on the fly.  
@@ -14,7 +16,7 @@ skCrypter is a compile-time string encryption library that encrypts strings by X
   decrypted[i] = encrypted[i] XOR ( key1 + ( i mod (1+key2) ) )
   ```
   
-- **Filtering** candidates to identify the genuine encrypted string(s)—in our example, those that contain the phrase `"This string is encrypted."`.
+- **Filtering** candidates to identify the genuine encrypted string(s)—in our example, those that contain the phrase `"This string is encrypted."` (in this example, modify it to your expected strings).
 - **Patching** the encrypted data so that the decrypted, cleartext string (plus a null terminator) is permanently in place.
 - **Auto-Cleanup:**  
   For every function that references the candidate, skbreaker automatically scans for the decryption loop (using a simple heuristic) and patches out the decryption junk by replacing the identified block with NOP instructions. This provides a clean and concise disassembly or decompilation view.
@@ -28,7 +30,7 @@ skCrypter is a compile-time string encryption library that encrypts strings by X
    The plugin asks you for the name of the segment to scan (default is `.rdata`). It then iterates over every byte in that segment, attempting to decrypt substrings using the skCrypter XOR formula.
 
 3. **Candidate Filtering:**  
-   Using a heuristic check (by default, verifying that the candidate contains `"This string is encrypted."`), non-genuine or junk candidates are discarded. You can modify the filtering logic in the `is_real_string()` function if your encrypted strings differ.
+   Using a heuristic check (by default, verifying that the candidate contains `"This string is encrypted."`  (in this example, modify it to your expected strings)), non-genuine or junk candidates are discarded. You can modify the filtering logic in the `is_real_string()` function if your encrypted strings differ.
 
 4. **Patching Decrypted Data:**  
    For every genuine candidate, skbreaker patches the corresponding bytes in the segment with the decrypted string (plus a null terminator). This means that the cleartext is permanently in place.
